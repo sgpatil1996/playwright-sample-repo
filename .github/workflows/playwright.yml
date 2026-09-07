@@ -1,39 +1,43 @@
-name: Playwright Tests
+name: Playwright Multi-Env Pipeline
 on:
   push:
     branches: [ main, feat/env ]
   pull_request:
     branches: [ main, master ]
-
-    workflow_dispatch:
+  workflow_dispatch:
     inputs:
       environment:
-        description: 'Select Environment'
+        description: 'Select Target Environment'
         required: true
         default: 'qa'
         type: choice
         options:
           - qa
           - staging
-jobs:
-  test:
-    timeout-minutes: 60
-    runs-on: ubuntu-latest
 
-  # 🌟 STEP 1: Dynamically unlock the selected Environment Room (qa or staging)
-    environment: ${{ github.event.inputs.environment || 'qa' }}
+jobs:
+  run-tests:
+    runs-on: ubuntu-latest
     
+    # 🌟 STEP 1: Dynamically unlock the selected Environment Room (qa or staging)
+    environment: ${{ github.event.inputs.environment || 'qa' }}
+
     steps:
-    - uses: actions/checkout@v4
-    - uses: actions/setup-node@v4
+    - name: Checkout Code
+      uses: actions/checkout@v4
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
       with:
-        node-version: lts/*
+        node-version: '20'
         cache: 'npm'
-    - name: Install dependencies
+        
+    - name: Install Dependencies
       run: npm ci
+      
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps
-   
+      
     - name: Reconstruct Environment File
       # 🌟 STEP 2: Dynamically creates .env.qa or .env.staging at the project root level
       run: |
@@ -46,16 +50,17 @@ jobs:
         echo "API_URL=${{ secrets.API_URL }}" >> $FILE_NAME
         echo "STANDARD_USER=${{ secrets.STANDARD_USER }}" >> $FILE_NAME
         echo "PASSWORD=${{ secrets.PASSWORD }}" >> $FILE_NAME
-    
-        - name: Run Playwright Tests
+        
+    - name: Run Playwright Tests
       # 🌟 STEP 3: Automatically runs either 'npm run test:qa' or 'npm run test:staging'
       run: |
         TARGET_ENV="${{ github.event.inputs.environment || 'qa' }}"
         echo "Launching automated tests against: $TARGET_ENV"
         npm run test:$TARGET_ENV
-
-    - uses: actions/upload-artifact@v4
+        
+    - name: Upload Execution Report
       if: ${{ !cancelled() }}
+      uses: actions/upload-artifact@v4
       with:
         name: playwright-execution-report
         path: playwright-report/
