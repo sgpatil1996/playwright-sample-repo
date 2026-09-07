@@ -1,0 +1,22 @@
+{
+  "name": "playwright-practice-framework",
+  "version": "1.0.0",
+  "description": "Scalable Page Object Model Framework using Playwright and TypeScript",
+  "scripts": {
+    
+    "clean": "rimraf playwright-report test-results",
+    "test": "playwright test",
+    "comment:test:ui": "playwright test --ui",
+    "comment:test:api": "playwright test tests/api/",
+    "comment:test:e2e": "playwright test tests/e2e/"
+  
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.63.0",
+    "@types/node": "^26.4.1",
+    "allure-playwright": "^3.12.0",
+    "dotenv": "^16.4.5",
+    "rimraf": "^6.0.1",
+    "typescript": "^5.6.3"
+  }
+}

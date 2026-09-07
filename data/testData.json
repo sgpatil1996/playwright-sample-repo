@@ -1,0 +1,11 @@
+{
+  "checkoutInfo": {
+    "firstName": "John",
+    "lastName": "Doe",
+    "postalCode": "12345"
+  },
+  "apiUser": {
+    "name": "morpheus",
+    "job": "leader"
+  }
+}
