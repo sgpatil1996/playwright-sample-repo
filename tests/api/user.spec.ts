@@ -17,4 +17,4 @@ test.describe('API Endpoint Integration Check', () => {
     expect(responseBody.name).toBe(payload.name);
     expect(responseBody.job).toBe(payload.job);
   });
-});
+})
