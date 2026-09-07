@@ -2,8 +2,8 @@ import { defineConfig, devices } from '@playwright/test';
 import * as dotenv from 'dotenv';
 import * as path from 'path';
 
-//const environment = process.env.TEST_ENV || 'qa';    //Declare the variable
-const environment = process.env.TEST_ENV || 'staging';    //Declare the variable
+const environment = process.env.TEST_ENV || 'qa';    //Declare the variable
+//const environment = process.env.TEST_ENV || 'staging';    //Declare the variable
 
 dotenv.config({ path: path.resolve(__dirname, `.env.${environment}`) });  //Pass it into the configuration resolver
 

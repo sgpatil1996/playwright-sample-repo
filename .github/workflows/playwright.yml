@@ -10,7 +10,7 @@ on:
       environment:
         description: 'Select Environment'
         required: true
-        default: 'staging'
+        default: 'qa'
         type: choice
         options:
           - qa
@@ -21,7 +21,7 @@ jobs:
     runs-on: ubuntu-latest
 
   # 🌟 STEP 1: Dynamically unlock the selected Environment Room (qa or staging)
-    environment: ${{ github.event.inputs.environment || 'staging' }}
+    environment: ${{ github.event.inputs.environment || 'qa' }}
     
     steps:
     - uses: actions/checkout@v4
@@ -37,7 +37,7 @@ jobs:
     - name: Reconstruct Environment File
       # 🌟 STEP 2: Dynamically creates .env.qa or .env.staging at the project root level
       run: |
-        TARGET_ENV="${{ github.event.inputs.environment || 'staging' }}"
+        TARGET_ENV="${{ github.event.inputs.environment || 'qa' }}"
         FILE_NAME=".env.$TARGET_ENV"
         echo "Generating file: $FILE_NAME"
         
@@ -50,7 +50,7 @@ jobs:
         - name: Run Playwright Tests
       # 🌟 STEP 3: Automatically runs either 'npm run test:qa' or 'npm run test:staging'
       run: |
-        TARGET_ENV="${{ github.event.inputs.environment || 'staging' }}"
+        TARGET_ENV="${{ github.event.inputs.environment || 'qa' }}"
         echo "Launching automated tests against: $TARGET_ENV"
         npm run test:$TARGET_ENV
 
