@@ -5,7 +5,8 @@
   "scripts": {
     
     "clean": "rimraf playwright-report test-results",
-    "test": "playwright test --project=chromium",
+    "test:qa": "playwright test --project=chromium",
+    "test:staging": "playwright test --project=chromium",
     "comment:test:ui": "playwright test --ui",
     "comment:test:api": "playwright test tests/api/",
     "comment:test:e2e": "playwright test tests/e2e/"
