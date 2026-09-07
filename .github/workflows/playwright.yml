@@ -20,7 +20,7 @@ jobs:
     timeout-minutes: 60
     runs-on: ubuntu-latest
 
-    # If triggered manually, use your choice selection input. If push/PR, default to 'qa'.
+  # 🌟 STEP 1: Dynamically unlock the selected Environment Room (qa or staging)
     environment: ${{ github.event.inputs.environment || 'staging' }}
     
     steps:
@@ -34,12 +34,12 @@ jobs:
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps
    
-    - name: Create Flat Target Environment File
-      # 🌟 STEP 2: Reconstruct either .env.qa or .env.staging dynamically at the project root
+    - name: Reconstruct Environment File
+      # 🌟 STEP 2: Dynamically creates .env.qa or .env.staging at the project root level
       run: |
-        TARGET_ENV="${{ github.event.inputs.environment || 'qa' }}"
+        TARGET_ENV="${{ github.event.inputs.environment || 'staging' }}"
         FILE_NAME=".env.$TARGET_ENV"
-        echo "Generating workspace file: $FILE_NAME"
+        echo "Generating file: $FILE_NAME"
         
         # Pulls URLs from Repository Secrets & Credentials from Active Environment Secrets
         echo "BASE_URL=${{ secrets.BASE_URL }}" >> $FILE_NAME
@@ -47,11 +47,11 @@ jobs:
         echo "STANDARD_USER=${{ secrets.STANDARD_USER }}" >> $FILE_NAME
         echo "PASSWORD=${{ secrets.PASSWORD }}" >> $FILE_NAME
     
-    - name: Run Playwright Tests
-      # 🌟 STEP 3: Triggers the environment matching test command (test:qa or test:staging)
+        - name: Run Playwright Tests
+      # 🌟 STEP 3: Automatically runs either 'npm run test:qa' or 'npm run test:staging'
       run: |
-        TARGET_ENV="${{ github.event.inputs.environment || 'qa' }}"
-        echo "Launching test execution framework profile against: $TARGET_ENV"
+        TARGET_ENV="${{ github.event.inputs.environment || 'staging' }}"
+        echo "Launching automated tests against: $TARGET_ENV"
         npm run test:$TARGET_ENV
 
     - uses: actions/upload-artifact@v4
