@@ -4,10 +4,25 @@ on:
     branches: [ main, master ]
   pull_request:
     branches: [ main, master ]
+
+    workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Select Environment'
+        required: true
+        default: 'qa'
+        type: choice
+        options:
+          - qa
+          - staging
 jobs:
   test:
     timeout-minutes: 60
     runs-on: ubuntu-latest
+
+    # If triggered manually, use your choice selection input. If push/PR, default to 'qa'.
+    environment: ${{ github.event.inputs.environment || 'qa' }}
+    
     steps:
     - uses: actions/checkout@v4
     - uses: actions/setup-node@v4
@@ -18,13 +33,27 @@ jobs:
       run: npm ci
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps
-    - name: Run Playwright tests
-      env:
-        BASE_URL: ${{ secrets.BASE_URL}}
-        API_URL: ${{secrets.API_URL}}
-        STANDARD_USER: ${{ secrets.STANDARD_USER}}
-        PASSWORD: ${{ secrets.PASSWORD}}
-      run: npm run test
+   
+    - name: Create Flat Target Environment File
+      # 🌟 STEP 2: Reconstruct either .env.qa or .env.staging dynamically at the project root
+      run: |
+        TARGET_ENV="${{ github.event.inputs.environment || 'qa' }}"
+        FILE_NAME=".env.$TARGET_ENV"
+        echo "Generating workspace file: $FILE_NAME"
+        
+        # Pulls URLs from Repository Secrets & Credentials from Active Environment Secrets
+        echo "BASE_URL=${{ secrets.BASE_URL }}" >> $FILE_NAME
+        echo "API_URL=${{ secrets.API_URL }}" >> $FILE_NAME
+        echo "STANDARD_USER=${{ secrets.STANDARD_USER }}" >> $FILE_NAME
+        echo "PASSWORD=${{ secrets.PASSWORD }}" >> $FILE_NAME
+    
+    - name: Run Playwright Tests
+      # 🌟 STEP 3: Triggers the environment matching test command (test:qa or test:staging)
+      run: |
+        TARGET_ENV="${{ github.event.inputs.environment || 'qa' }}"
+        echo "Launching test execution framework profile against: $TARGET_ENV"
+        npm run test:$TARGET_ENV
+
     - uses: actions/upload-artifact@v4
       if: ${{ !cancelled() }}
       with:

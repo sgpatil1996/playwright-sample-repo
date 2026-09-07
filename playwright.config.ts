@@ -2,7 +2,8 @@ import { defineConfig, devices } from '@playwright/test';
 import * as dotenv from 'dotenv';
 import * as path from 'path';
 
-dotenv.config({ path: path.resolve(__dirname, '.env') });
+const environment = process.env.TEST_ENV || 'qa';    //Declare the variable
+dotenv.config({ path: path.resolve(__dirname, `.env.${environment}`) });  //Pass it into the configuration resolver
 
 export default defineConfig({
   testDir: './tests',
@@ -37,7 +38,10 @@ export default defineConfig({
         ],                                                    //html report for always
 
   use: {
-    baseURL: process.env.BASE_URL || 'https://www.saucedemo.com',
+    //baseURL: process.env.BASE_URL || 'https://www.saucedemo.com',
+    // Read variable from CLI argument or fall back to 'qa' as default
+    baseURL: process.env.BASE_URL,
+
     trace: 'on',
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',
