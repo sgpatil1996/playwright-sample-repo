@@ -12,7 +12,7 @@ jobs:
     - uses: actions/checkout@v4
     - uses: actions/setup-node@v4
       with:
-        node-version: '20'
+        node-version: lts/*
         cache: 'npm'
     - name: Install dependencies
       run: npm ci
@@ -22,7 +22,7 @@ jobs:
       env:
         BASE_URL: ${{ secrets.BASE_URL }}
         API_URL: ${{secrets.API_URL}}
-        STANDARD_USER: ${{ secrets.STANDARD_USER }}
+        STANDARD_USER: ${{ secrets.STANDARD_USER}}
         PASSWORD: ${{ secrets.PASSWORD}}
       run: npm run test
     - uses: actions/upload-artifact@v4
