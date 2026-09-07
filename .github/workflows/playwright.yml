@@ -10,7 +10,7 @@ on:
       environment:
         description: 'Select Environment'
         required: true
-        default: 'qa'
+        default: 'staging'
         type: choice
         options:
           - qa
@@ -21,7 +21,7 @@ jobs:
     runs-on: ubuntu-latest
 
     # If triggered manually, use your choice selection input. If push/PR, default to 'qa'.
-    environment: ${{ github.event.inputs.environment || 'qa' }}
+    environment: ${{ github.event.inputs.environment || 'staging' }}
     
     steps:
     - uses: actions/checkout@v4
