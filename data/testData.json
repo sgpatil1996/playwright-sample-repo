@@ -4,8 +4,32 @@
     "lastName": "Doe",
     "postalCode": "12345"
   },
-  "apiUser": {
-    "name": "morpheus",
-    "job": "leader"
+  "postUser": {
+    "id": 0,
+  "category": {
+    "id": 0,
+    "name": "string"
+  },
+  "name": "doggie",
+  "photoUrls": [
+    "string"
+  ],
+  "tags": [
+    {
+      "id": 0,
+      "name": "string"
+    }
+  ],
+  "status": "available"
+  },
+
+"putUser": {
+  "id": 88441199,
+    "category": { "id": 1, "name": "Canines" },
+    "name": "Maximus Rex",
+    "photoUrls": ["https://example.com"],
+    "tags": [{ "id": 1, "name": "certified" }],
+    "status": "pending"
   }
-}
+ 
+  }
