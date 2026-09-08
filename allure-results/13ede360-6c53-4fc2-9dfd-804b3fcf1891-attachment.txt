@@ -1,0 +1,9 @@
+Fetching order with ID: 9061785862533667000
+Received Response Body: {
+  id: 9061785862533667000,
+  petId: 328349646781533900,
+  quantity: 1900489411,
+  shipDate: '2026-09-07T16:32:03.664+0000',
+  status: 'placed',
+  complete: true
+}
