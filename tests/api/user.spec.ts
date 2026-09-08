@@ -3,7 +3,7 @@ import * as testData from '../../data/testData.json';
 
 test.describe('API Endpoint Integration Check', () => {
   test('POST /api/users - Should create a user record successfully', async ({ request }) => {
-    const apiBaseUrl = process.env.API_URL || 'https://reqres.in';
+    const apiBaseUrl = process.env.API_URL_User || 'https://reqres.in';
     const payload = testData.apiUser;
 
     const response = await request.post(`${apiBaseUrl}/api/users`, {
