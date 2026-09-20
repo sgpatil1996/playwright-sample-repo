@@ -21,7 +21,7 @@ jobs:
     - name: Run Playwright tests
       env:
         BASE_URL: ${{ secrets.BASE_URL}}
-        API_URL: ${{secrets.API_URL}}
+        API_URL: ${{secrets.API_URL_USE}}
         STANDARD_USER: ${{ secrets.STANDARD_USER}}
         PASSWORD: ${{ secrets.PASSWORD}}
       run: npm run test
