@@ -10,15 +10,15 @@ export class ItemDetailsPage {
   constructor(page: Page) {
     this.page = page;
     this.navbar = new Navbar(page);
-    //this.itemName = page.locator('.inventory_details_name');
-    this.itemName= page.locator('[data-test="inventory-item-name"]');
+    this.itemName = page.locator('.inventory_details_name');
+    //this.itemName= page.locator('[data-test="inventory-item-name"]');
     this.addToCartButton = page.locator('[data-test^="add-to-cart"]');
   }
 
   async openItemByName(name: string) {
     // Corrected syntax
-   await this.itemName.filter({ hasText: name }).first().click();
-  //await this.page.locator('.inventory_item_name', { hasText: name }).first().click();
+  //await this.itemName.filter({ hasText: name }).first().click();
+  await this.page.locator('.inventory_item_name', { hasText: name }).first().click();
   }
 
 
